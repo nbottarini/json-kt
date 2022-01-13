@@ -67,11 +67,11 @@ Given the following sample json:
 ```kotlin
 val json = Json.parse(input) // input can be a string with your json or a java.io.Reader
 
-val name = json.path("name").asString() // returns "John"
-val keyboardPrice = json.path("purchases[0].price").asFloat() // returns 200.5
+val name = json.path("name")?.asString() // returns "John"
+val keyboardPrice = json.path("purchases[0].price")?.asFloat() // returns 200.5
 
-val name = json.path("name").asBoolean() // returns null
-val name = json.path("name").asBoolean("some-default") // returns "some-default"
+val name = json.path("name")?.asBoolean() // returns null
+val name = json.path("name")?.asBoolean("some-default") // returns "some-default"
 ```
 
 ### Json class
@@ -176,7 +176,7 @@ json.asArray()[2]
 
 Or you can use the path method for traversing:
 ```kotlin
-json.path("user.purchases[2].product.price").asFloat()
+json.path("user.purchases[2].product.price")?.asFloat()
 ```
 
 You can also assert for each type:
