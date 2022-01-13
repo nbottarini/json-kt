@@ -12,8 +12,11 @@ class JsonTest {
     @Test
     fun `literal constants`() {
         assertThat(Json.NULL.isNull).isTrue
+        assertThat(Json.value(null)).isEqualTo(Json.NULL)
         assertThat(Json.TRUE.isTrue).isTrue
+        assertThat(Json.value(true)).isEqualTo(Json.TRUE)
         assertThat(Json.FALSE.isFalse).isTrue
+        assertThat(Json.value(false)).isEqualTo(Json.FALSE)
     }
 
     @Test

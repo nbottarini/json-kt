@@ -17,4 +17,18 @@ class ListExtensionsTest {
         assertThat(listOf(true, 3.14, "foo").toJson()).isEqualTo(JsonArray(true, 3.14, "foo"))
         assertThat(listOf(Json.value("foo"), Json.value(23)).toJson()).isEqualTo(JsonArray(Json.value("foo"), Json.value(23)))
     }
+
+    @Test
+    fun `toJson nested`() {
+        val list = listOf(
+            mapOf("id" to 1, "productName" to "Sunglasses"),
+            mapOf("id" to 2, "productName" to "Smartwatch"),
+        )
+        val expected = Json.array(
+            Json.obj("id" to 1, "productName" to "Sunglasses"),
+            Json.obj("id" to 2, "productName" to "Smartwatch"),
+        )
+
+        assertThat(list.toJson()).isEqualTo(expected)
+    }
 }

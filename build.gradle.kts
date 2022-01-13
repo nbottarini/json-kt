@@ -69,7 +69,7 @@ publishing {
 
             pom {
                 name.set("Json")
-                description.set("Json library")
+                description.set("Small and fast kotlin library for reading and writing json")
                 url.set("https://github.com/nbottarini/asimov-json-kt")
 
                 licenses {

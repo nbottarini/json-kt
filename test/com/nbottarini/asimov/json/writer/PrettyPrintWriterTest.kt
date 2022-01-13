@@ -1,11 +1,8 @@
 package com.nbottarini.asimov.json.writer
 
 import com.nbottarini.asimov.json.Json
-import com.nbottarini.asimov.json.values.JsonArray
-import com.nbottarini.asimov.json.values.JsonObject
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import java.io.StringWriter
 
 class PrettyPrintWriterTest {
     @Test
