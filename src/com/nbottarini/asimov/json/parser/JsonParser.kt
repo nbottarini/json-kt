@@ -61,16 +61,16 @@ class JsonParser(private val handler: JsonParserHandler = DefaultJsonParserHandl
    */
 
     init {
-        handler.parser = this
+        handler.setParser(this)
     }
 
-    fun parse(string: String): JsonValue? {
+    fun parse(string: String): JsonValue {
         val bufferSize = max(MIN_BUFFER_SIZE, min(DEFAULT_BUFFER_SIZE, string.length))
         parse(StringReader(string), bufferSize)
         return handler.value
     }
 
-    fun parse(reader: Reader, buffersize: Int = DEFAULT_BUFFER_SIZE): JsonValue? {
+    fun parse(reader: Reader, buffersize: Int = DEFAULT_BUFFER_SIZE): JsonValue {
         if (buffersize <= 0) throw IllegalArgumentException("buffersize is zero or negative")
         this.reader = reader
         buffer = CharArray(buffersize)
@@ -103,7 +103,7 @@ class JsonParser(private val handler: JsonParserHandler = DefaultJsonParserHandl
     }
 
     private fun readArray() {
-        val array: JsonArray? = handler.startArray()
+        val array = handler.startArray()
         read()
         if (++nestingLevel > MAX_NESTING_LEVEL) throw error("Nesting too deep")
         skipWhiteSpace()
@@ -125,7 +125,7 @@ class JsonParser(private val handler: JsonParserHandler = DefaultJsonParserHandl
     }
 
     private fun readObject() {
-        val obj: JsonObject? = handler.startObject()
+        val obj = handler.startObject()
         read()
         if (++nestingLevel > MAX_NESTING_LEVEL) throw error("Nesting too deep")
         skipWhiteSpace()

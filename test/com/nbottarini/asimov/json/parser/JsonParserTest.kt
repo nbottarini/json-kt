@@ -141,25 +141,25 @@ class JsonParserTest {
     @Test
     fun `parse line and column on first line`() {
         parser.parse("[]")
-        assertThat(handler.lastLocation.toString()).isEqualTo("1:3")
+        assertThat(handler.location.toString()).isEqualTo("1:3")
     }
 
     @Test
     fun `parse line and column after LF`() {
         parser.parse("[\n]")
-        assertThat(handler.lastLocation.toString()).isEqualTo("2:2")
+        assertThat(handler.location.toString()).isEqualTo("2:2")
     }
 
     @Test
     fun `parse line and column after CRLF`() {
         parser.parse("[\r\n]")
-        assertThat(handler.lastLocation.toString()).isEqualTo("2:2")
+        assertThat(handler.location.toString()).isEqualTo("2:2")
     }
 
     @Test
     fun `parse line and column after CR`() {
         parser.parse("[\r]")
-        assertThat(handler.lastLocation.toString()).isEqualTo("1:4")
+        assertThat(handler.location.toString()).isEqualTo("1:4")
     }
 
     @Test
@@ -366,23 +366,23 @@ class JsonParserTest {
 
     @Test
     fun `string empty`() {
-        assertThat(Json.parse("\"\"")?.asString()).isEqualTo("")
+        assertThat(Json.parse("\"\"").asString()).isEqualTo("")
     }
 
     @Test
     fun `string ascii`() {
-        assertThat(Json.parse("\" \"")?.asString()).isEqualTo(" ")
-        assertThat(Json.parse("\"a\"")?.asString()).isEqualTo("a")
-        assertThat(Json.parse("\"foo\"")?.asString()).isEqualTo("foo")
-        assertThat(Json.parse("\"A2-D2\"")?.asString()).isEqualTo("A2-D2")
-        assertThat(Json.parse("\"\u007f\"")?.asString()).isEqualTo("\u007f")
+        assertThat(Json.parse("\" \"").asString()).isEqualTo(" ")
+        assertThat(Json.parse("\"a\"").asString()).isEqualTo("a")
+        assertThat(Json.parse("\"foo\"").asString()).isEqualTo("foo")
+        assertThat(Json.parse("\"A2-D2\"").asString()).isEqualTo("A2-D2")
+        assertThat(Json.parse("\"\u007f\"").asString()).isEqualTo("\u007f")
     }
 
     @Test
     fun `string non ascii`() {
-        assertThat(Json.parse("\"Русский\"")?.asString()).isEqualTo("Русский")
-        assertThat(Json.parse("\"العربية\"")?.asString()).isEqualTo("العربية")
-        assertThat(Json.parse("\"日本語\"")?.asString()).isEqualTo("日本語")
+        assertThat(Json.parse("\"Русский\"").asString()).isEqualTo("Русский")
+        assertThat(Json.parse("\"العربية\"").asString()).isEqualTo("العربية")
+        assertThat(Json.parse("\"日本語\"").asString()).isEqualTo("日本語")
     }
 
     @Test
@@ -396,14 +396,14 @@ class JsonParserTest {
 
     @Test
     fun `string valid escapes`() {
-        assertThat(Json.parse("\" \\\" \"")?.asString()).isEqualTo(" \" ")
-        assertThat(Json.parse("\" \\\\ \"")?.asString()).isEqualTo(" \\ ")
-        assertThat(Json.parse("\" \\/ \"")?.asString()).isEqualTo(" / ")
-        assertThat(Json.parse("\" \\b \"")?.asString()).isEqualTo(" \u0008 ")
+        assertThat(Json.parse("\" \\\" \"").asString()).isEqualTo(" \" ")
+        assertThat(Json.parse("\" \\\\ \"").asString()).isEqualTo(" \\ ")
+        assertThat(Json.parse("\" \\/ \"").asString()).isEqualTo(" / ")
+        assertThat(Json.parse("\" \\b \"").asString()).isEqualTo(" \u0008 ")
 //        assertThat(Json.parse("\" \\f \"")?.asString()).isEqualTo(" \u000c ")
-        assertThat(Json.parse("\" \\r \"")?.asString()).isEqualTo(" \r ")
-        assertThat(Json.parse("\" \\n \"")?.asString()).isEqualTo(" \n ")
-        assertThat(Json.parse("\" \\t \"")?.asString()).isEqualTo(" \t ")
+        assertThat(Json.parse("\" \\r \"").asString()).isEqualTo(" \r ")
+        assertThat(Json.parse("\" \\n \"").asString()).isEqualTo(" \n ")
+        assertThat(Json.parse("\" \\t \"").asString()).isEqualTo(" \t ")
     }
 
     @Test
@@ -415,10 +415,10 @@ class JsonParserTest {
 
     @Test
     fun `string valid unicodes`() {
-        assertThat(Json.parse("\"\\u0021\"")?.asString()).isEqualTo("\u0021")
-        assertThat(Json.parse("\"\\u4711\"")?.asString()).isEqualTo("\u4711")
-        assertThat(Json.parse("\"\\uffff\"")?.asString()).isEqualTo("\uffff")
-        assertThat(Json.parse("\"\\uabcdx\"")?.asString()).isEqualTo("\uabcdx")
+        assertThat(Json.parse("\"\\u0021\"").asString()).isEqualTo("\u0021")
+        assertThat(Json.parse("\"\\u4711\"").asString()).isEqualTo("\u4711")
+        assertThat(Json.parse("\"\\uffff\"").asString()).isEqualTo("\uffff")
+        assertThat(Json.parse("\"\\uabcdx\"").asString()).isEqualTo("\uabcdx")
     }
 
     @Test
@@ -457,10 +457,10 @@ class JsonParserTest {
     fun `numbers minus zero`() {
         val value = Json.parse("-0")
 
-        assertThat(value?.asInt()).isEqualTo(0)
-        assertThat(value?.asLong()).isEqualTo(0L)
-        assertThat(value?.asFloat()).isEqualTo(0f)
-        assertThat(value?.asDouble()).isEqualTo(0.0)
+        assertThat(value.asInt()).isEqualTo(0)
+        assertThat(value.asLong()).isEqualTo(0L)
+        assertThat(value.asFloat()).isEqualTo(0f)
+        assertThat(value.asDouble()).isEqualTo(0.0)
     }
 
     @Test
@@ -574,10 +574,15 @@ class JsonParserTest {
     private val parser = JsonParser(handler)
 }
 
-class FakeParserHandler: JsonParserHandler() {
-    var lastLocation: Location? = null
-        private set
+class FakeParserHandler: JsonParserHandler {
     private val log = StringBuilder()
+    override val value = Json.NULL
+    private var parser: JsonParser? = null
+    override val location get() = parser!!.location
+
+    override fun setParser(parser: JsonParser) {
+        this.parser = parser
+    }
 
     override fun startNull() {
         record("startNull")
@@ -611,55 +616,53 @@ class FakeParserHandler: JsonParserHandler() {
         record("endNumber", string)
     }
 
-    override fun startArray(): JsonArray? {
+    override fun startArray(): JsonArray {
         record("startArray")
         return JsonArray()
-//        return "a" + ++sequence
     }
 
-    override fun endArray(array: JsonArray?) {
-        record("endArray", array!!)
+    override fun endArray(array: JsonArray) {
+        record("endArray", array)
     }
 
-    override fun startArrayValue(array: JsonArray?) {
-        record("startArrayValue", array!!)
+    override fun startArrayValue(array: JsonArray) {
+        record("startArrayValue", array)
     }
 
-    override fun endArrayValue(array: JsonArray?) {
-        record("endArrayValue", array!!)
+    override fun endArrayValue(array: JsonArray) {
+        record("endArrayValue", array)
     }
 
-    override fun startObject(): JsonObject? {
+    override fun startObject(): JsonObject {
         record("startObject")
         return JsonObject()
     }
 
-    override fun endObject(obj: JsonObject?) {
-        record("endObject", obj!!)
+    override fun endObject(obj: JsonObject) {
+        record("endObject", obj)
     }
 
-    override fun startObjectName(obj: JsonObject?) {
-        record("startObjectName", obj!!)
+    override fun startObjectName(obj: JsonObject) {
+        record("startObjectName", obj)
     }
 
-    override fun endObjectName(obj: JsonObject?, name: String) {
-        record("endObjectName", obj!!, name)
+    override fun endObjectName(obj: JsonObject, name: String) {
+        record("endObjectName", obj, name)
     }
 
-    override fun startObjectValue(obj: JsonObject?, name: String) {
-        record("startObjectValue", obj!!, name)
+    override fun startObjectValue(obj: JsonObject, name: String) {
+        record("startObjectValue", obj, name)
     }
 
-    override fun endObjectValue(obj: JsonObject?, name: String) {
-        record("endObjectValue", obj!!, name)
+    override fun endObjectValue(obj: JsonObject, name: String) {
+        record("endObjectValue", obj, name)
     }
 
     fun getLog() = log.toString()
 
     private fun record(event: String, vararg args: Any) {
-        lastLocation = location
         log.append(event)
         args.forEach { log.append(' ').append(it) }
-        log.append(' ').append(lastLocation!!.offset).append('\n')
+        log.append(' ').append(location.offset).append('\n')
     }
 }

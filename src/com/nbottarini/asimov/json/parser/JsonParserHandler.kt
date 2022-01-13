@@ -26,49 +26,49 @@ import com.nbottarini.asimov.json.values.JsonArray
 import com.nbottarini.asimov.json.values.JsonObject
 import com.nbottarini.asimov.json.values.JsonValue
 
-abstract class JsonParserHandler {
-    var value: JsonValue? = null
-        protected set
-    var parser: JsonParser? = null
-    val location get() = parser!!.location
+interface JsonParserHandler {
+//    var value: JsonValue? = null
+//        protected set
+//    var parser: JsonParser? = null
+//    val location get() = parser!!.location
+    val value: JsonValue
+    val location: Location
 
-    open fun startNull() {}
+    fun setParser(parser: JsonParser)
 
-    open fun endNull() {}
+    fun startNull()
 
-    open fun startBoolean() {}
+    fun endNull()
 
-    open fun endBoolean(bool: Boolean) {}
+    fun startBoolean()
 
-    open fun startString() {}
+    fun endBoolean(bool: Boolean)
 
-    open fun endString(string: String) {}
+    fun startString()
 
-    open fun startNumber() {}
+    fun endString(string: String)
 
-    open fun endNumber(string: String) {}
+    fun startNumber()
 
-    open fun startArray(): JsonArray? {
-        return null
-    }
+    fun endNumber(string: String)
 
-    open fun endArray(array: JsonArray?) {}
+    fun startArray(): JsonArray
 
-    open fun startArrayValue(array: JsonArray?) {}
+    fun endArray(array: JsonArray)
 
-    open fun endArrayValue(array: JsonArray?) {}
+    fun startArrayValue(array: JsonArray)
 
-    open fun startObject(): JsonObject? {
-        return null
-    }
+    fun endArrayValue(array: JsonArray)
 
-    open fun endObject(obj: JsonObject?) {}
+    fun startObject(): JsonObject
 
-    open fun startObjectName(obj: JsonObject?) {}
+    fun endObject(obj: JsonObject)
 
-    open fun endObjectName(obj: JsonObject?, name: String) {}
+    fun startObjectName(obj: JsonObject)
 
-    open fun startObjectValue(obj: JsonObject?, name: String) {}
+    fun endObjectName(obj: JsonObject, name: String)
 
-    open fun endObjectValue(obj: JsonObject?, name: String) {}
+    fun startObjectValue(obj: JsonObject, name: String)
+
+    fun endObjectValue(obj: JsonObject, name: String)
 }
