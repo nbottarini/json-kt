@@ -2,7 +2,6 @@ package com.nbottarini.asimov.json.values
 
 import com.nbottarini.asimov.json.Json
 import com.nbottarini.asimov.json.writer.JsonWriter
-import com.nbottarini.asimov.json.writer.MinimalJsonWriter
 
 class JsonObject(pairs: List<Pair<String, Any?>> = listOf()): JsonValue(), MutableMap<String, JsonValue> {
     private val map = mutableMapOf<String, JsonValue>()
@@ -108,4 +107,20 @@ class JsonObject(pairs: List<Pair<String, Any?>> = listOf()): JsonValue(), Mutab
     override fun hashCode() = map.hashCode()
 
     override fun equals(other: Any?) = other is JsonObject && other.map == map
+
+    fun getStringOrThrow(key: String) = get(key)?.asString() ?: throw IllegalAccessError("$key not found or is not a String")
+
+    fun getIntOrThrow(key: String) = get(key)?.asInt() ?: throw IllegalAccessError("$key not found or is not an Int")
+
+    fun getLongOrThrow(key: String) = get(key)?.asLong() ?: throw IllegalAccessError("$key not found or is not an Long")
+
+    fun getFloatOrThrow(key: String) = get(key)?.asFloat() ?: throw IllegalAccessError("$key not found or is not an Float")
+
+    fun getDoubleOrThrow(key: String) = get(key)?.asDouble() ?: throw IllegalAccessError("$key not found or is not an Double")
+
+    fun getBooleanOrThrow(key: String) = get(key)?.asBoolean() ?: throw IllegalAccessError("$key not found or is not an Boolean")
+
+    fun getObjectOrThrow(key: String) = get(key)?.asObject() ?: throw IllegalAccessError("$key not found or is not an JsonObject")
+
+    fun getArrayOrThrow(key: String) = get(key)?.asArray() ?: throw IllegalAccessError("$key not found or is not an JsonArray")
 }

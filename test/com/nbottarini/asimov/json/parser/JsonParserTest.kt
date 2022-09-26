@@ -564,7 +564,7 @@ class JsonParserTest {
 
     private fun assertParseError(offset: Int, message: String, block: () -> Unit) {
         val e = assertThrows<JsonParseError>(block)
-        assertThat(e.location.offset).isEqualTo(offset)
+        assertThat(e.location?.offset).isEqualTo(offset)
         assertThat(e.message).startsWith("$message at")
     }
 
