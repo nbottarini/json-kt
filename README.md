@@ -1,8 +1,8 @@
-[![Maven](https://img.shields.io/maven-central/v/com.nbottarini/asimov-json.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.nbottarini%22%20AND%20a%3A%22asimov-json%22)
+[![Maven](https://img.shields.io/maven-central/v/dev.botta/json.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22dev.botta%22%20AND%20a%3A%22json%22)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![CI Status](https://github.com/nbottarini/asimov-json-kt/actions/workflows/gradle.yml/badge.svg?branch=master)](https://github.com/nbottarini/asimov-json-kt/actions?query=branch%3Amaster+workflow%3Aci)
+[![CI Status](https://github.com/nbottarini/json-kt/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/nbottarini/json-kt/actions?query=branch%3Amaster+workflow%3Aci)
 
-# Asimov Json
+# Json
 Small and fast kotlin library for reading and writing json.
 
 ## Installation
@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.nbottarini:asimov-json:0.5.2")
+    implementation("dev.botta:json:1.0.0")
 }
 ```
 
@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.nbottarini:asimov-json:0.5.2'
+    implementation 'dev.botta:json:1.0.0'
 }
 ```
 
@@ -35,9 +35,9 @@ dependencies {
 
 ```xml
 <dependency>
-    <groupId>com.nbottarini</groupId>
-    <artifactId>asimov-json</artifactId>
-    <version>0.5.2</version>
+    <groupId>dev.botta</groupId>
+    <artifactId>json</artifactId>
+    <version>1.0.0</version>
 </dependency>
 ```
 
